@@ -9,20 +9,55 @@ const PRODUCTS=[
  {name:'NVIDIA RTX 3060',detail:'12GB GDDR6 · مستعمل · التجربة متاحة',price:15000,icon:'💎',tone:'#74abff'},
  {name:'NVIDIA GTX 1060',detail:'3GB GDDR5 · مستعمل · التجربة متاحة',price:4200,icon:'🎮',tone:'#a5afff'},
  {name:'AMD RX 580',detail:'4GB GDDR5 · مستعمل · التجربة متاحة',price:2300,icon:'🔥',tone:'#fa7b8c'},
- {name:'DDR4 RAM 8GB / 3200MHz',detail:'عدد 2 قطعة حسب آخر إعلان · تأكد من الماركة',price:3000,icon:'▤',tone:'#6bdfff'},
+ {name:'DDR4 RAM 8GB / 3200MHz',detail:'عدد 2 قطعة حسب آخر إعلان · صورة القطعة المعروضة',price:3000,icon:'▤',tone:'#6bdfff'},
  {name:'Crucial DDR4 RAM 8GB / 2666MHz',detail:'عدد 2 قطعة حسب آخر إعلان',price:2600,icon:'▤',tone:'#bc8cf9'}
 ];
 const label={online:'أونلاين',story:'قصة وتختيم',racing:'سباقات',action:'أكشن ومتنوعة'};
 // كل الصور محلية داخل assets؛ مفيش روابط صور خارجية معرضة للاختفاء.
 // لو لعبة ملهاش صورة مستقلة بنعرض صورة فنية للتصنيف بدل الإيموجي.
 const GAME_ART={
- 'PUBG Mobile':'pubg','Valorant':'valorant','Fortnite':'fortnite','League of Legends':'league',
- 'Roblox':'roblox','Counter-Strike':'counterstrike','GTA V':'gtav',
- 'Red Dead Redemption 2':'rdr2','God of War':'godwar','Marvel’s Spider-Man':'spiderman',
- 'Marvel’s Spider-Man: Miles Morales':'spiderman','BLUR':'blur',
- 'Need for Speed':'nfs','CrossFire':'counterstrike','CarX Street':'blur',
- 'GTA Vice City':'gtav','GTA San Andreas':'gtav','World War Z':'battlefield',
- 'Call of Duty':'battlefield','Battlefield':'battlefield',
+ 'PUBG Mobile':'pubg',
+ 'Valorant':'valorant',
+ 'Fortnite':'fortnite',
+ 'League of Legends':'league',
+ 'Roblox':'roblox',
+ 'Counter-Strike':'counterstrike',
+ 'GTA V':'gtav',
+ 'Red Dead Redemption 2':'rdr2',
+ 'God of War':'godwar',
+ 'Marvel’s Spider-Man':'spiderman',
+ 'BLUR':'blur',
+ 'Need for Speed':'nfs',
+ 'CrossFire':'game-07',
+ 'Minecraft':'game-08',
+ 'GTA IV':'game-10',
+ 'Marvel’s Spider-Man: Miles Morales':'game-14',
+ 'Far Cry 5':'game-15',
+ 'Assassin’s Creed IV: Black Flag':'game-16',
+ 'Assassin’s Creed III':'game-17',
+ 'Tomb Raider':'game-18',
+ 'Rise of the Tomb Raider':'game-19',
+ 'Shadow of the Tomb Raider':'game-20',
+ 'Batman: Arkham Vengeance':'game-21',
+ 'Max Payne':'game-22',
+ 'Metal Gear Solid V':'game-23',
+ 'Resident Evil 3':'game-24',
+ 'The House of the Dead':'game-25',
+ 'CarX Street':'game-28',
+ 'Just Cause 3':'game-29',
+ 'Just Cause 4':'game-30',
+ 'Call of Duty':'game-31',
+ 'World War Z':'game-32',
+ 'Plants vs. Zombies':'game-33',
+ 'Plants vs. Zombies 2':'game-34',
+ 'Stronghold Crusader':'game-35',
+ 'GTA Vice City':'game-36',
+ 'GTA San Andreas':'game-37',
+ 'Shank 2':'game-38',
+ 'Tekken 3':'game-39',
+ 'Metal Slug X':'game-40',
+ 'Chicken Invaders':'game-41',
+ 'Hitman 2':'game-42',
 };
 const artFor=(n,c)=>'/assets/games/'+(GAME_ART[n]||'theme-'+c)+'.webp';
 const grid=document.getElementById('gamesGrid');let currentCategory='all';
@@ -32,7 +67,7 @@ function renderGames(){
  const items=GAMES.filter(([n,c])=>(currentCategory==='all'||c===currentCategory)&&n.toLowerCase().includes(q));
  if(!items.length){grid.innerHTML='<div class="empty-games">اللعبة مش ظاهرة في القائمة؟ ابعت اسمها وإحنا هنشوف إمكانية توفيرها 🎮</div>';return;}
  grid.innerHTML=items.map(([n,c,icon,desc,color])=>`<article class="game-card game-card-art" style="--accent:${color}">
-   <div class="game-cover"><img src="${artFor(n,c)}" alt="تصميم بصري للعبة ${escapeHtml(n)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/assets/games/theme-${c}.webp'"><span class="game-category">${label[c]}</span></div>
+   <div class="game-cover"><img src="${artFor(n,c)}" alt="تصميم بصري للعبة ${escapeHtml(n)}" loading="lazy" decoding="async" onerror="this.style.display='none';this.parentElement.classList.add('no-image')"><span class="game-category">${label[c]}</span></div>
    <div class="game-description"><h3>${escapeHtml(n)}</h3><p>${escapeHtml(desc)}</p><button aria-label="استفسار عن ${escapeHtml(n)}" data-game="${escapeHtml(n)}">استفسر عن اللعبة <span aria-hidden="true">↗</span></button></div>
  </article>`).join('');
 }
@@ -47,7 +82,7 @@ const PRODUCT_ART={
 };
 const productGrid=document.getElementById('productsGrid');
 productGrid.innerHTML=PRODUCTS.map(p=>`<article class="product-card product-card-art" style="--tone:${p.tone}">
-  <div class="product-photo"><img src="/assets/products/${PRODUCT_ART[p.name]}.webp" loading="lazy" decoding="async" alt="صورة توضيحية ${escapeHtml(p.name)}"><span>صور توضيحية</span></div>
+  <div class="product-photo"><img src="/assets/products/${PRODUCT_ART[p.name]}.webp" loading="lazy" decoding="async" alt="صورة توضيحية ${escapeHtml(p.name)}"><span>${p.name.includes('RAM')?'صورة من المنتج':'صورة للتوضيح'}</span></div>
   <div class="product-body"><h4>${escapeHtml(p.name)}</h4><div class="product-meta">${escapeHtml(p.detail)}</div><div class="product-bottom"><span class="product-price">${p.price.toLocaleString('en-US')} <small>جنيه</small></span><a href="https://wa.me/201043554348?text=${encodeURIComponent('أهلاً بركات نت، عايز أستفسر عن سعر وتوفر '+p.name+' بسعر '+p.price+' جنيه')}" target="_blank" rel="noopener">استفسر ↗</a></div></div>
 </article>`).join('');
 const menu=document.getElementById('nav'),menuBtn=document.getElementById('menuBtn');menuBtn.addEventListener('click',()=>{const isOpen=menu.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(isOpen));menuBtn.textContent=isOpen?'✕':'☰'});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.textContent='☰'}));
